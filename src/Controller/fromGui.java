@@ -16,8 +16,10 @@ import javax.swing.JTextArea;
  */
 public class fromGui {
     Matrix matrix;
+    ArrayList l ;
     public fromGui(){
         matrix = new Matrix(8,8);
+        l = new ArrayList();
         }
     public void SetLeftRightArrows(int fil, int col, String arrow){
         Node n = matrix.getNode(fil, col);
@@ -59,13 +61,50 @@ public class fromGui {
     public void startDetectionAlgorithm(int fil, int col, JTextArea jt){
         //Initial node
         Node initialNode = matrix.getNode(fil, col);
-        ArrayList l = new ArrayList();
-        l.add(initialNode);
-        Node n = initialNode;
-        if(n.getLeft() == 1){}
-        if(n.getRight() == 1){}
-        if(n.getDown() == 1){}
-        if(n.getUp() == 1){}
+        deadLock(initialNode);
+        
         jt.setText("DeathLock detected");
+    }
+    
+    public void deadLock(Node n){
+        checkExistence(n);
+        l.add(n);
+        if(n.getLeft() == 1){
+            //Outgoing Arc Marked
+            n.setLeft(2);
+            //New node
+            Node node = matrix.getNode(n.getRow(), n.getColumn());
+            deadLock(node);
+        }
+        if(n.getRight() == 1){
+            //Outgoing Arc Marked
+            n.setRight(2);
+            //New node
+            Node node = matrix.getNode(n.getRow(), n.getColumn());
+            deadLock(node);
+        }
+        if(n.getDown() == 1){
+            //Outgoing Arc Marked
+            n.setDown(2);
+            //New node
+            Node node = matrix.getNode(n.getRow(), n.getColumn());
+            deadLock(node);
+        }
+        if(n.getUp() == 1){
+            //Outgoing Arc Marked
+            n.setUp(2);
+            //New node
+            Node node = matrix.getNode(n.getRow(), n.getColumn());
+            deadLock(node);
+        }
+    }
+    public boolean checkExistence(Node n){
+        boolean existence = false;
+        for(int c = 0; c<l.size(); c++){
+            if(l.get(0).equals(n)){
+                existence = true;
+            }
+        }
+        return existence;
     }
 }

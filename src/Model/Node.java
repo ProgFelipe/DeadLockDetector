@@ -29,6 +29,12 @@ public class Node {
     public String getName(){
         return name;
     }
+    public int getRow(){
+        return Row;
+    }
+    public int getColumn(){
+        return Column;
+    }
     public int getUp(){return Up;}
     public int getDown(){return Down;}
     public int getLeft(){return Left;}
