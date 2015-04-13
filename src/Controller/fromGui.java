@@ -19,7 +19,9 @@ public class fromGui {
     Matrix matrix;
     ArrayList l ;
     String outPutText;
+    boolean existence;
     public fromGui(){
+        existence = false;
         matrix = new Matrix(8,8);
         l = new ArrayList();
         }
@@ -64,11 +66,14 @@ public class fromGui {
         //Initial node
         Node initialNode = matrix.getNode(fil, col);
         deadLock(initialNode, jt);
+        if(!existence){
+            jt.setText("No DeadLock found!");
+        }
     }
     
     public void deadLock(Node n, JTextArea jt){
         if(checkExistence(n)){
-            outPutText += "\n ¡¡¡¡DeathLock!!!!";
+            outPutText += "\n ¡¡¡¡DeadLock!!!!";
             jt.setText(outPutText);
         }else{
         l.add(n);
@@ -82,7 +87,7 @@ public class fromGui {
             Node node = matrix.getNode(n.getRow(), column);
             
             deadLock(node, jt);
-        }
+        }else
         if(n.getRight() == 1){
             //Outgoing Arc Marked
             n.setRight(2);
@@ -93,7 +98,7 @@ public class fromGui {
             Node node = matrix.getNode(n.getRow(), column);
             
             deadLock(node, jt);
-        }
+        }else
         if(n.getDown() == 1){
             //Outgoing Arc Marked
             n.setDown(2);
@@ -104,7 +109,7 @@ public class fromGui {
             Node node = matrix.getNode(row, n.getColumn());
             
             deadLock(node, jt);
-        }
+        }else
         if(n.getUp() == 1){
             //Outgoing Arc Marked
             n.setUp(2);
@@ -115,10 +120,16 @@ public class fromGui {
             Node node = matrix.getNode(row, n.getColumn());
             
             deadLock(node, jt);
-        }}
+        }else{
+            //BackTrack
+            Node node = (Node)l.get(l.size()-2);
+            l.remove(l.size()-2);
+            deadLock(node, jt);
+        }
+            }
     }
     public boolean checkExistence(Node n){
-        boolean existence = false;
+        existence = false;
         for(int c = 0; c<l.size(); c++){
             if(l.get(c).equals(n)){
                 existence = true;
@@ -127,7 +138,8 @@ public class fromGui {
         return existence;
     }
     public void refreshAll(){
-        matrix = new Matrix(8,8);
+        existence = false;
+        outPutText = "";
         l = new ArrayList();
     }
 }
