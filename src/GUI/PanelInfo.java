@@ -29,7 +29,7 @@ public class PanelInfo extends JPanel{
         pm = pMatrix;
         new GridLayout(1, 3, 7, 7);//filas, columnas, espacio entre filas, espacio entre columna
         fr = frgui;
-        textArea = new JTextArea(6, 40);
+        textArea = new JTextArea(4, 50);
         JScrollPane scrollPane = new JScrollPane(textArea); 
         textArea.setEditable(false);
         textArea.setFont(new Font("Serif", Font.ITALIC, 16));
@@ -39,7 +39,7 @@ public class PanelInfo extends JPanel{
         JTextField textField = new JTextField(10);
         textField.setFont(new Font("Serif", Font.ITALIC, 16));
         
-        JButton boton = new JButton("Calc DeathLock");
+        JButton boton = new JButton("Calc DeadLock");
         
         boton.addActionListener(new ActionListener(){
 
@@ -48,27 +48,10 @@ public class PanelInfo extends JPanel{
                 String[] a = textField.getText().split(",");
                 fr.startDetectionAlgorithm(Integer.parseInt(a[0].trim()), Integer.parseInt(a[1].trim()), textArea);
             }
-        });
-        
-        JButton botonRefresh = new JButton("Refresh");
-        botonRefresh.setBackground(Color.BLUE);
-        botonRefresh.addActionListener(new ActionListener(){
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                textArea.setText("");
-                textField.setText("");
-                fr.refreshAll();
-                
-                //pm.refreshMatrix();
-            }
-        });
-        
-        
+        });        
         boton.setBackground(Color.ORANGE);
         this.add(scrollPane);
         this.add(textField);
         this.add(boton);
-        this.add(botonRefresh);
     }
 }
