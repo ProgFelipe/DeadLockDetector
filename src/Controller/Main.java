@@ -26,10 +26,5 @@ public class Main {
         PanelMatrix panelMatrix = new PanelMatrix(fr);
         PanelInfo panelInfo = new PanelInfo(fr, panelMatrix);
         new Frame(panelMatrix, panelInfo);
-    }
-    
-    public void setNode(int Row, int Column, String Name){
-        new Node(Name, Row, Column);
-    }
-                   
+    }                   
 }

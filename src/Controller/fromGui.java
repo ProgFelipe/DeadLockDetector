@@ -5,6 +5,7 @@
  */
 package Controller;
 
+import GUI.Frame;
 import GUI.PanelMatrix;
 import Model.Matrix;
 import Model.Node;
@@ -16,12 +17,15 @@ import javax.swing.JTextArea;
  * @author Felipe
  */
 public class fromGui {
+    Frame frame;
     Matrix matrix;
     ArrayList l ;
     String outPutText;
     boolean existence;
+    boolean notbacktrack;
     public fromGui(){
         existence = false;
+        notbacktrack = true;
         matrix = new Matrix(8,8);
         l = new ArrayList();
         }
@@ -67,16 +71,17 @@ public class fromGui {
         Node initialNode = matrix.getNode(fil, col);
         deadLock(initialNode, jt);
         if(!existence){
-            jt.setText("No DeadLock found!");
+            jt.setText(outPutText+"\nNo DeadLock found!");
         }
     }
     
     public void deadLock(Node n, JTextArea jt){
+        jt.setText(outPutText);
         if(checkExistence(n)){
             outPutText += "\n ¡¡¡¡DeadLock!!!!";
             jt.setText(outPutText);
         }else{
-        l.add(n);
+        if(notbacktrack){l.add(n);}
         if(n.getLeft() == 1){
             //Outgoing Arc Marked
             n.setLeft(2);
@@ -85,7 +90,7 @@ public class fromGui {
             outPutText += "\nLEFT ["+n.getRow()+", "+ column+"]";
             jt.setText(outPutText);
             Node node = matrix.getNode(n.getRow(), column);
-            
+            notbacktrack = true;
             deadLock(node, jt);
         }else
         if(n.getRight() == 1){
@@ -94,9 +99,8 @@ public class fromGui {
             //New node
             int column = n.getColumn()+1;
             outPutText += "\nRIGHT ["+n.getRow()+", "+ column+"]";
-            jt.setText(outPutText);
             Node node = matrix.getNode(n.getRow(), column);
-            
+            notbacktrack = true;
             deadLock(node, jt);
         }else
         if(n.getDown() == 1){
@@ -105,9 +109,8 @@ public class fromGui {
             //New node
             int row = n.getRow()+1;
             outPutText += "\nDOWN ["+row+", "+ n.getColumn()+"]";
-            jt.setText(outPutText);
             Node node = matrix.getNode(row, n.getColumn());
-            
+            notbacktrack = true;
             deadLock(node, jt);
         }else
         if(n.getUp() == 1){
@@ -116,17 +119,20 @@ public class fromGui {
             //New node
             int row = n.getRow()-1;
             outPutText += "\nUP ["+row+", "+ n.getColumn()+"]";
-            jt.setText(outPutText);
             Node node = matrix.getNode(row, n.getColumn());
-            
+            notbacktrack = true;
             deadLock(node, jt);
-        }else{
+        }else
+            if(l.size() > 1){
             //BackTrack
             Node node = (Node)l.get(l.size()-2);
+            outPutText += "\n**<-BackTrack ["+node.getRow()+", "+node.getColumn()+"]";
+            notbacktrack = false;
             l.remove(l.size()-2);
             deadLock(node, jt);
-        }
             }
+        }
+            
     }
     public boolean checkExistence(Node n){
         existence = false;
@@ -141,5 +147,6 @@ public class fromGui {
         existence = false;
         outPutText = "";
         l = new ArrayList();
+
     }
 }
