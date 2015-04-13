@@ -5,6 +5,7 @@
  */
 package Controller;
 
+import GUI.PanelMatrix;
 import Model.Matrix;
 import Model.Node;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import javax.swing.JTextArea;
 public class fromGui {
     Matrix matrix;
     ArrayList l ;
+    String outPutText;
     public fromGui(){
         matrix = new Matrix(8,8);
         l = new ArrayList();
@@ -61,50 +63,71 @@ public class fromGui {
     public void startDetectionAlgorithm(int fil, int col, JTextArea jt){
         //Initial node
         Node initialNode = matrix.getNode(fil, col);
-        deadLock(initialNode);
-        
-        jt.setText("DeathLock detected");
+        deadLock(initialNode, jt);
     }
     
-    public void deadLock(Node n){
-        checkExistence(n);
+    public void deadLock(Node n, JTextArea jt){
+        if(checkExistence(n)){
+            outPutText += "\n ¡¡¡¡DeathLock!!!!";
+            jt.setText(outPutText);
+        }else{
         l.add(n);
         if(n.getLeft() == 1){
             //Outgoing Arc Marked
             n.setLeft(2);
             //New node
-            Node node = matrix.getNode(n.getRow(), n.getColumn());
-            deadLock(node);
+            int column = n.getColumn()-1;
+            outPutText += "\nLEFT ["+n.getRow()+", "+ column+"]";
+            jt.setText(outPutText);
+            Node node = matrix.getNode(n.getRow(), column);
+            
+            deadLock(node, jt);
         }
         if(n.getRight() == 1){
             //Outgoing Arc Marked
             n.setRight(2);
             //New node
-            Node node = matrix.getNode(n.getRow(), n.getColumn());
-            deadLock(node);
+            int column = n.getColumn()+1;
+            outPutText += "\nRIGHT ["+n.getRow()+", "+ column+"]";
+            jt.setText(outPutText);
+            Node node = matrix.getNode(n.getRow(), column);
+            
+            deadLock(node, jt);
         }
         if(n.getDown() == 1){
             //Outgoing Arc Marked
             n.setDown(2);
             //New node
-            Node node = matrix.getNode(n.getRow(), n.getColumn());
-            deadLock(node);
+            int row = n.getRow()+1;
+            outPutText += "\nDOWN ["+row+", "+ n.getColumn()+"]";
+            jt.setText(outPutText);
+            Node node = matrix.getNode(row, n.getColumn());
+            
+            deadLock(node, jt);
         }
         if(n.getUp() == 1){
             //Outgoing Arc Marked
             n.setUp(2);
             //New node
-            Node node = matrix.getNode(n.getRow(), n.getColumn());
-            deadLock(node);
-        }
+            int row = n.getRow()-1;
+            outPutText += "\nUP ["+row+", "+ n.getColumn()+"]";
+            jt.setText(outPutText);
+            Node node = matrix.getNode(row, n.getColumn());
+            
+            deadLock(node, jt);
+        }}
     }
     public boolean checkExistence(Node n){
         boolean existence = false;
         for(int c = 0; c<l.size(); c++){
-            if(l.get(0).equals(n)){
+            if(l.get(c).equals(n)){
                 existence = true;
             }
         }
         return existence;
+    }
+    public void refreshAll(){
+        matrix = new Matrix(8,8);
+        l = new ArrayList();
     }
 }

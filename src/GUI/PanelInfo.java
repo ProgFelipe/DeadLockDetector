@@ -24,10 +24,12 @@ import javax.swing.JTextField;
 public class PanelInfo extends JPanel{
     JTextArea textArea;
     fromGui fr ;
-    public PanelInfo(fromGui frgui){
+    PanelMatrix pm;
+    public PanelInfo(fromGui frgui, PanelMatrix pMatrix){
+        pm = pMatrix;
         new GridLayout(1, 3, 7, 7);//filas, columnas, espacio entre filas, espacio entre columna
         fr = frgui;
-        textArea = new JTextArea(4, 60);
+        textArea = new JTextArea(5, 40);
         JScrollPane scrollPane = new JScrollPane(textArea); 
         textArea.setEditable(false);
         textArea.setFont(new Font("Serif", Font.ITALIC, 16));
@@ -38,6 +40,7 @@ public class PanelInfo extends JPanel{
         textField.setFont(new Font("Serif", Font.ITALIC, 16));
         
         JButton boton = new JButton("Calc DeathLock");
+        
         boton.addActionListener(new ActionListener(){
 
             @Override
@@ -47,9 +50,24 @@ public class PanelInfo extends JPanel{
             }
         });
         
+        JButton botonRefresh = new JButton("Refresh");
+        botonRefresh.setBackground(Color.BLUE);
+        botonRefresh.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                textArea.setText("");
+                textField.setText("");
+                fr.refreshAll();
+                //pm.refreshMatrix();
+            }
+        });
+        
+        
         boton.setBackground(Color.ORANGE);
         this.add(scrollPane);
         this.add(textField);
         this.add(boton);
+        this.add(botonRefresh);
     }
 }

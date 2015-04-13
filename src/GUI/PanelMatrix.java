@@ -156,7 +156,9 @@ public class PanelMatrix extends JPanel{
                     }
                 });
               } catch (IOException ex) { System.err.println("Error: "+ex);}
-    
+    }
+    public void refreshMatrix(){
+      
     }
     
 }
