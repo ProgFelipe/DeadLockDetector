@@ -45,4 +45,24 @@ public class Matrix {
             }
         }
     }
+    public void refreshMatrix(){
+        for(int f = 0; f<filas; f++){
+            for(int c = 0; c< columnas; c++){
+                if(matriz[f][c] != null){
+                    if(matriz[f][c].getDown() == 2){
+                        matriz[f][c].setDown(1);
+                    }
+                    if(matriz[f][c].getUp() == 2){
+                        matriz[f][c].setUp(1);
+                    }
+                    if(matriz[f][c].getLeft() == 2){
+                        matriz[f][c].setLeft(1);
+                    }
+                    if(matriz[f][c].getRight() == 2){
+                        matriz[f][c].setRight(1);
+                    }
+                }
+            }
+        }
+    }
 }

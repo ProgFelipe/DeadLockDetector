@@ -73,6 +73,7 @@ public class fromGui {
         if(!existence){
             jt.setText(outPutText+"\nNo DeadLock found!");
         }
+        refreshAll();
     }
     
     public void deadLock(Node n, JTextArea jt){
@@ -145,8 +146,9 @@ public class fromGui {
     }
     public void refreshAll(){
         existence = false;
+        notbacktrack = true;
         outPutText = "";
         l = new ArrayList();
-
+        matrix.refreshMatrix();
     }
 }
